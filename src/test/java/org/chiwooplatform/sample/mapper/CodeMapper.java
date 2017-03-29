@@ -5,11 +5,9 @@
  */
 package org.chiwooplatform.sample.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.chiwooplatform.mybatis.mapper.BaseMapper;
+import org.chiwooplatform.mybatis.mapper.ExtMapper;
 import org.chiwooplatform.sample.model.Code;
 
-@Mapper
 public interface CodeMapper
-    extends BaseMapper<Code> {
+    extends ExtMapper<Code> {
 }

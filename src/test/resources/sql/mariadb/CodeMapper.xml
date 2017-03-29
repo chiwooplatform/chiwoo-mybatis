@@ -9,7 +9,7 @@ select  count(1) as ordno
 from    COM_CODE
 where   cd_id = #{cd_id,jdbcType=INTEGER}
 ]]></selectKey>
-        <if test="ordno==0"><![CDATA[
+		<if test="ordno==0"><![CDATA[
 insert  into COM_CODE (
         cd_id,
         up_cd_id,
@@ -58,7 +58,7 @@ set     up_cd_id           = #{up_cd_id,jdbcType=INTEGER},
         ext_val2           = #{ext_val2,jdbcType=VARCHAR}
 where   cd_id              = #{cd_id,jdbcType=INTEGER}
 ]]></if>
-</insert>
+	</insert>
 	<insert id="add" parameterType="code"><![CDATA[
 insert  into COM_CODE (
         cd_id,
@@ -111,7 +111,7 @@ set     up_cd_id           = #{up_cd_id,jdbcType=INTEGER},
 where   cd_id              = #{cd_id,jdbcType=INTEGER}
 ]]></update>
 
-    <update id="enable" parameterType="map"><![CDATA[
+	<update id="enable" parameterType="map"><![CDATA[
 update  COM_CODE a
 set     use_yn = 1
 where   cd_id  = #{cd_id,jdbcType=INTEGER}
@@ -151,40 +151,6 @@ where   cd_id = #{cd_id,jdbcType=INTEGER}
 ]]></select>
 
 
-	<insert id="addForMap" parameterType="map"><![CDATA[
-insert  into COM_CODE (
-        cd_id,
-        up_cd_id,
-        cd_val,
-        cd_name,
-        cd_eng_name,
-        cd_descr,
-        use_yn,
-        ordno,
-        register_id,
-        reg_dtm,
-        open_yn,
-        standard_spec,
-        ext_val,
-        ext_val2 )
-values (
-        #{cd_id,jdbcType=INTEGER},
-        #{up_cd_id,jdbcType=INTEGER},
-        #{cd_val,jdbcType=VARCHAR},
-        #{cd_name,jdbcType=VARCHAR},
-        #{cd_eng_name,jdbcType=VARCHAR},
-        #{cd_descr,jdbcType=VARCHAR},
-        #{use_yn,jdbcType=INTEGER},
-        #{ordno,jdbcType=INTEGER},
-        #{register_id,jdbcType=INTEGER},
-        CURRENT_TIMESTAMP,
-        #{open_yn,jdbcType=INTEGER},
-        #{standard_spec,jdbcType=VARCHAR},
-        #{ext_val,jdbcType=VARCHAR},
-        #{ext_val2,jdbcType=VARCHAR}
-       )
-]]></insert>
-
 
 	<select id="getForMap" parameterType="integer" resultType="rmap"><![CDATA[
 select  a.cd_id,
@@ -207,7 +173,7 @@ from    COM_CODE a
 where   cd_id = #{cd_id,jdbcType=INTEGER}
 ]]></select>
 
-    <select id="list" parameterType="map" resultType="code"><![CDATA[
+	<select id="query" parameterType="map" resultType="code"><![CDATA[
 select  a.cd_id,
         a.up_cd_id,
         a.cd_val,
@@ -228,7 +194,7 @@ from    COM_CODE a
 where   a.cd_id = IFNULL(#{cd_id,jdbcType=INTEGER}, a.cd_id )
 ]]></select>
 
-	<select id="listForMap" parameterType="map" resultType="rmap"><![CDATA[
+	<select id="queryForMap" parameterType="map" resultType="rmap"><![CDATA[
 select  a.cd_id,
         a.up_cd_id,
         a.cd_val,
@@ -248,5 +214,5 @@ select  a.cd_id,
 from    COM_CODE a
 where   a.cd_id = IFNULL(#{cd_id,jdbcType=INTEGER}, a.cd_id )
 ]]></select>
- 
+
 </mapper>
