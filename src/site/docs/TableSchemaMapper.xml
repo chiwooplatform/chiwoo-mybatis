@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.chiwooplatform.sample.mapper.TableSchemaMapper">
+
+	<select id="query" parameterType="map" resultType="tableSchema"><![CDATA[
+select  table_schema, 
+            table_name, 
+        ordinal_position as no, 
+        column_name, 
+        column_type, 
+            column_default as `default`, 
+        is_nullable, 
+        column_key as `key`, 
+        column_comment
+from    INFORMATION_SCHEMA.COLUMNS
+where   table_schema = schema() 
+and     table_name = #{table_name,jdbcType=VARCHAR}
+order by ordinal_position
+]]></select>
+
+	<select id="queryForMap" parameterType="map" resultType="rmap"><![CDATA[
+select  *
+from    INFORMATION_SCHEMA.COLUMNS
+where   table_schema = schema() 
+and     table_name = #{table_name,jdbcType=VARCHAR}
+order by ordinal_position
+]]></select>
+
+</mapper>

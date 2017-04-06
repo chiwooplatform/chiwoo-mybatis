@@ -79,7 +79,7 @@ public class CodeMapperTests
         Code result = mapper.get( cd_id );
         logger.info( "result: {}", result );
         HashMap<String, Object> param = new HashMap<>();
-        List<ResultMap> results = mapper.queryForMap( param, null );
+        List<ResultMap> results = mapper.queryForMap( param, BaseMapper.rowBounds( param ) );
         logger.info( "results: {}", results );
         mapper.remove( model );
         Code result2 = mapper.get( cd_id );
@@ -91,9 +91,11 @@ public class CodeMapperTests
         throws Exception {
         Code model = model();
         mapper.saveOrUpdate( model );
-        RowBounds bounds = new RowBounds( 0, 10 );
         Map<String, Object> param = new HashMap<>();
         param.put( "cd_id", this.cd_id );
+        param.put( BaseMapper.ROWBOUNDS_OFFSET, 1 );
+        param.put( BaseMapper.ROWBOUNDS_SCALE, 10 );
+        RowBounds bounds = BaseMapper.rowBounds( param );
         List<Code> list = mapper.query( param, bounds );
         assertNotNull( list );
         logger.info( "size: {}", list.size() );
@@ -104,11 +106,12 @@ public class CodeMapperTests
         throws Exception {
         Code model = model();
         mapper.saveOrUpdate( model );
-        RowBounds bounds = new RowBounds( 0, 100 );
         Map<String, Object> param = new HashMap<>();
         param.put( BaseMapper.TOTAL_ROWCOUNT, 1 );
         param.put( "cd_id", this.cd_id );
-        List<Code> list = mapper.query( param, bounds );
+        param.put( BaseMapper.ROWBOUNDS_OFFSET, 0 );
+        param.put( BaseMapper.ROWBOUNDS_SCALE, 50 );
+        List<Code> list = mapper.query( param, BaseMapper.rowBounds( param ) );
         assertNotNull( list );
         logger.info( "BaseMapper.TOTAL_ROWCOUNT: {}", param.get( BaseMapper.TOTAL_ROWCOUNT ) );
         logger.info( "size: {}", list.size() );
