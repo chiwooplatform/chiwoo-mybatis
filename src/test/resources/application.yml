@@ -3,8 +3,6 @@ spring:
   application:
     name: mybatis-plugin
   datasource:
-    initialize: false
-    schema: classpath:import.sql
     url: jdbc:mariadb://192.168.56.11:3306/SAMPLES
     username: aider
     password: aider1234
