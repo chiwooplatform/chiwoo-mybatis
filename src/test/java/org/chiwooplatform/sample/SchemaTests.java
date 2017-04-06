@@ -3,7 +3,7 @@
  * @version 1.0, 2017-04-06
  * @copyright BESPIN GLOBAL
  */
-package org.chiwooplatform.sample.mapper;
+package org.chiwooplatform.sample;
 
 import javax.sql.DataSource;
 
