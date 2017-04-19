@@ -14,37 +14,32 @@ import org.apache.ibatis.type.MappedJdbcTypes;
  */
 @MappedJdbcTypes(JdbcType.VARCHAR)
 public class CharacterTypeHandler
-    extends BaseTypeHandler<Object>
-{
+    extends BaseTypeHandler<Object> {
+
     public void setNonNullParameter( PreparedStatement ps, int i, Character parameter, JdbcType jdbcType )
-        throws SQLException
-    {
+        throws SQLException {
         ps.setString( i, parameter.toString() );
     }
 
     public String getNullableResult( ResultSet rs, String columnName )
-        throws SQLException
-    {
+        throws SQLException {
         return rs.getString( columnName );
     }
 
     public String getNullableResult( CallableStatement cs, int columnIndex )
-        throws SQLException
-    {
+        throws SQLException {
         return cs.getString( columnIndex );
     }
 
     @Override
     public void setNonNullParameter( PreparedStatement ps, int i, Object parameter, JdbcType jdbcType )
-        throws SQLException
-    {
+        throws SQLException {
         ps.setString( i, parameter.toString() );
     }
 
     @Override
     public String getNullableResult( ResultSet rs, int columnIndex )
-        throws SQLException
-    {
+        throws SQLException {
         return rs.getString( columnIndex );
     }
 }

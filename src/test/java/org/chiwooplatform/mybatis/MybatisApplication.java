@@ -1,11 +1,12 @@
 package org.chiwooplatform.mybatis;
 
-import org.chiwooplatform.mybatis.LoggingInterceptor;
-import org.chiwooplatform.mybatis.PaginationInterceptor;
-import org.chiwooplatform.mybatis.dialect.MariaDBDialect;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import org.chiwooplatform.mybatis.dialect.MariaDBDialect;
+import org.chiwooplatform.mybatis.plugin.LoggingInterceptor;
+import org.chiwooplatform.mybatis.plugin.PaginationInterceptor;
+import org.mybatis.spring.annotation.MapperScan;
 
 /**
  * This class is for testing mybatis mapper.
@@ -16,7 +17,7 @@ public class MybatisApplication {
 
     @Bean
     public PaginationInterceptor paginationInterceptor() {
-        final PaginationInterceptor  interceptor= new PaginationInterceptor();
+        final PaginationInterceptor interceptor = new PaginationInterceptor();
         interceptor.setDialect( new MariaDBDialect() );
         return interceptor;
     }

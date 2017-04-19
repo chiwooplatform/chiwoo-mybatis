@@ -1,10 +1,11 @@
-package org.chiwooplatform.mybatis;
+package org.chiwooplatform.mybatis.plugin;
 
-import java.lang.reflect.Field;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import java.lang.reflect.Field;
+import java.sql.Statement;
 
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -15,6 +16,7 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +38,7 @@ public class LoggingInterceptor
         if ( param == null ) {
             sql = sql.replaceFirst( "\\?", "''" );
         } else {
-            // final String paramTypeName = param.getClass().getSimpleName(); 
+            // final String paramTypeName = param.getClass().getSimpleName();
             // logger.info( "paramTypeName: {}", paramTypeName );
             if ( param instanceof Integer || param instanceof Long || param instanceof Float
                 || param instanceof Double ) {
@@ -63,18 +65,23 @@ public class LoggingInterceptor
                     String propValue = mapping.getProperty();
                     Field field = paramClass.getDeclaredField( propValue );
                     field.setAccessible( true );
-                    Class<?> javaType = mapping.getJavaType();
-                    if ( String.class == javaType ) {
-                        sql = sql.replaceFirst( "\\?", "'" + field.get( param ) + "'" );
+                    Object val = field.get( param );
+                    if ( val != null ) {
+                        Class<?> javaType = mapping.getJavaType();
+                        if ( String.class == javaType ) {
+                            sql = sql.replaceFirst( "\\?", "'" + field.get( param ) + "'" );
+                        } else {
+                            sql = sql.replaceFirst( "\\?", field.get( param ).toString() );
+                        }
                     } else {
-                        sql = sql.replaceFirst( "\\?", field.get( param ).toString() );
+                        sql = sql.replaceFirst( "\\?", "null" );
                     }
                 }
             }
         }
-        //logger.debug( "=====================================================================" );
-        logger.debug( sql );
-        //logger.debug( "=====================================================================" );
+        // logger.debug( "=====================================================================" );
+        logger.debug( "\n{}\n", sql );
+        // logger.debug( "=====================================================================" );
         return invocation.proceed();
     }
 

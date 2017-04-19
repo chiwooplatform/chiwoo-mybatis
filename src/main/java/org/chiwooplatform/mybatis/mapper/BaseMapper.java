@@ -1,17 +1,19 @@
 package org.chiwooplatform.mybatis.mapper;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.session.RowBounds;
+
+import org.chiwooplatform.mybatis.model.ResultMap;
 
 /**
  * <pre>
  * Mybatis mapper 에 구현해 주세요.
  * </pre>
+ * 
+ * @param <T> Model class against dbms table
  * 
  * @author aider
  */
@@ -28,7 +30,7 @@ public interface BaseMapper<T> {
      * 신규 데이타 생성 처리
      * 
      * @param model 신규 데이타 생성에 필요한 모델 데이타
-     * @throws RuntimeException
+     * @throws RuntimeException while access dbms
      */
     void add( T model )
         throws RuntimeException;
@@ -37,7 +39,7 @@ public interface BaseMapper<T> {
      * 데이타 갱신 처리
      * 
      * @param model 데이타 갱신에 필요한 모델 데이타
-     * @throws RuntimeException
+     * @throws RuntimeException while access dbms
      */
     void modify( T model )
         throws RuntimeException;
@@ -46,9 +48,9 @@ public interface BaseMapper<T> {
      * 데이타 삭제 처리
      * 
      * @param id 데이타 삭제 조건에 사용될 Key 객체
-     * @throws RuntimeException
+     * @throws RuntimeException while access dbms
      */
-    void remove( Serializable id )
+    void remove( Object id )
         throws RuntimeException;
 
     /**
@@ -56,9 +58,9 @@ public interface BaseMapper<T> {
      * 
      * @param id 조회 조건에 사용될 Key 객체
      * @return 데이타 조회
-     * @throws RuntimeException
+     * @throws RuntimeException while access dbms
      */
-    T get( Serializable id )
+    T get( Object id )
         throws RuntimeException;
 
     List<T> query( Map<String, ?> map );
@@ -66,10 +68,9 @@ public interface BaseMapper<T> {
     /**
      * 모델 T 에 관한 페이징 목록 조회
      * 
-     * @param 조회 조건에 사용 될 파라미터 Map
+     * @param map 조회 조건에 사용 될 파라미터 Map
      * @param bounds 페이징 처리시 offset 과 limit 을 설정
      * @return 모델 T 에 관한 목록 데이타셋
-     * @throws RuntimeException
      */
     List<T> query( Map<String, ?> map, RowBounds bounds );
 
@@ -78,7 +79,7 @@ public interface BaseMapper<T> {
      * 
      * @param id 조회 조건에 사용될 Key 객체
      * @return Map 데이타
-     * @throws RuntimeException
+     * @throws RuntimeException while access dbms
      */
     ResultMap getForMap( Object id )
         throws RuntimeException;
@@ -98,14 +99,17 @@ public interface BaseMapper<T> {
      * 페이징 쿼리를 위한 RowBounds 객체를 반환 한다.
      *
      * <pre>
-     * RDBMS 의 페이징 쿼리 정보를 처리 하기 위해 Map<K, V> 파라미터 중
+     * RDBMS 의 페이징 쿼리 정보를 처리 하기 위해 Map&#60;K, V&#62; 파라미터 중
      * scale, offset 속성과 값을 처리하여 RowBounds 객체를 반환 한다.
      * </pre>
      *
-     * @param params Map<K, V> 페이징 쿼리 정보를 위한 파라미터 식별 및 값 바인딩을 위한 파라미터 맵
+     * @param params Map&#60;K, V&#62; 페이징 쿼리 정보를 위한 파라미터 식별 및 값 바인딩을 위한 파라미터 맵
      * @return RDBMS 의 페이징 쿼리 정보를 관리하는 RowBounds 객체
      */
     static public RowBounds rowBounds( Map<String, Object> params ) {
+        if ( params == null ) {
+            return null;
+        }
         int offset = 0;
         int scale = 0;
         if ( params.containsKey( ROWBOUNDS_SCALE ) ) {

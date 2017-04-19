@@ -5,168 +5,153 @@ import java.sql.Date;
 
 import org.apache.ibatis.type.Alias;
 
+@SuppressWarnings("serial")
 @Alias("code")
 public class Code
     implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private Integer cdId;
 
-    private Integer cd_id;
+    private Integer upCdId;
 
-    private Integer up_cd_id;
+    private String cdVal;
 
-    private String cd_val;
+    private String cdName;
 
-    private String cd_name;
+    private String cdEngName;
 
-    private String cd_eng_name;
+    private String cdPath;
 
-    private String cd_path;
+    private String descr;
 
-    private String cd_descr;
-
-    private Boolean use_yn;
+    private Boolean useYn;
 
     private Integer ordno;
 
-    private Integer register_id;
+    private Integer registerId;
 
-    private Date reg_dtm;
+    private Date regDtm;
 
-    private Integer modifier_id;
+    private Integer modifierId;
 
-    private Date upd_dtm;
+    private Date updDtm;
 
-    private Boolean open_yn;
+    private String extVal;
 
-    private String standard_spec;
+    private String extVal2;
 
-    private String ext_val;
-
-    private String ext_val2;
+    private Boolean existsYn;
 
     /**
-     * @see java.lang.Object#toString()
+     * @return the cdId
      */
-    @Override
-    public String toString() {
-        return "Code [cd_id=" + cd_id + ", up_cd_id=" + up_cd_id + ", cd_val=" + cd_val + ", cd_name=" + cd_name
-            + ", cd_eng_name=" + cd_eng_name + ", cd_path=" + cd_path + ", cd_descr=" + cd_descr + ", use_yn=" + use_yn
-            + ", ordno=" + ordno + ", register_id=" + register_id + ", reg_dtm=" + reg_dtm + ", modifier_id="
-            + modifier_id + ", upd_dtm=" + upd_dtm + ", open_yn=" + open_yn + ", standard_spec=" + standard_spec
-            + ", ext_val=" + ext_val + ", ext_val2=" + ext_val2 + "]";
+    public Integer getCdId() {
+        return cdId;
     }
 
     /**
-     * @return the cd_id
+     * @param cdId the cdId to set
      */
-    public Integer getCd_id() {
-        return cd_id;
+    public void setCdId( Integer cdId ) {
+        this.cdId = cdId;
     }
 
     /**
-     * @param cd_id the cd_id to set
+     * @return the upCdId
      */
-    public void setCd_id( Integer cd_id ) {
-        this.cd_id = cd_id;
+    public Integer getUpCdId() {
+        return upCdId;
     }
 
     /**
-     * @return the up_cd_id
+     * @param upCdId the upCdId to set
      */
-    public Integer getUp_cd_id() {
-        return up_cd_id;
+    public void setUpCdId( Integer upCdId ) {
+        this.upCdId = upCdId;
     }
 
     /**
-     * @param up_cd_id the up_cd_id to set
+     * @return the cdVal
      */
-    public void setUp_cd_id( Integer up_cd_id ) {
-        this.up_cd_id = up_cd_id;
+    public String getCdVal() {
+        return cdVal;
     }
 
     /**
-     * @return the cd_val
+     * @param cdVal the cdVal to set
      */
-    public String getCd_val() {
-        return cd_val;
+    public void setCdVal( String cdVal ) {
+        this.cdVal = cdVal;
     }
 
     /**
-     * @param cd_val the cd_val to set
+     * @return the cdName
      */
-    public void setCd_val( String cd_val ) {
-        this.cd_val = cd_val;
+    public String getCdName() {
+        return cdName;
     }
 
     /**
-     * @return the cd_name
+     * @param cdName the cdName to set
      */
-    public String getCd_name() {
-        return cd_name;
+    public void setCdName( String cdName ) {
+        this.cdName = cdName;
     }
 
     /**
-     * @param cd_name the cd_name to set
+     * @return the cdEngName
      */
-    public void setCd_name( String cd_name ) {
-        this.cd_name = cd_name;
+    public String getCdEngName() {
+        return cdEngName;
     }
 
     /**
-     * @return the cd_eng_name
+     * @param cdEngName the cdEngName to set
      */
-    public String getCd_eng_name() {
-        return cd_eng_name;
+    public void setCdEngName( String cdEngName ) {
+        this.cdEngName = cdEngName;
     }
 
     /**
-     * @param cd_eng_name the cd_eng_name to set
+     * @return the cdPath
      */
-    public void setCd_eng_name( String cd_eng_name ) {
-        this.cd_eng_name = cd_eng_name;
+    public String getCdPath() {
+        return cdPath;
     }
 
     /**
-     * @return the cd_path
+     * @param cdPath the cdPath to set
      */
-    public String getCd_path() {
-        return cd_path;
+    public void setCdPath( String cdPath ) {
+        this.cdPath = cdPath;
     }
 
     /**
-     * @param cd_path the cd_path to set
+     * @return the descr
      */
-    public void setCd_path( String cd_path ) {
-        this.cd_path = cd_path;
+    public String getDescr() {
+        return descr;
     }
 
     /**
-     * @return the cd_descr
+     * @param descr the descr to set
      */
-    public String getCd_descr() {
-        return cd_descr;
+    public void setDescr( String descr ) {
+        this.descr = descr;
     }
 
     /**
-     * @param cd_descr the cd_descr to set
+     * @return the useYn
      */
-    public void setCd_descr( String cd_descr ) {
-        this.cd_descr = cd_descr;
+    public Boolean getUseYn() {
+        return useYn;
     }
 
     /**
-     * @return the use_yn
+     * @param useYn the useYn to set
      */
-    public Boolean getUse_yn() {
-        return use_yn;
-    }
-
-    /**
-     * @param use_yn the use_yn to set
-     */
-    public void setUse_yn( Boolean use_yn ) {
-        this.use_yn = use_yn;
+    public void setUseYn( Boolean useYn ) {
+        this.useYn = useYn;
     }
 
     /**
@@ -184,114 +169,100 @@ public class Code
     }
 
     /**
-     * @return the register_id
+     * @return the registerId
      */
-    public Integer getRegister_id() {
-        return register_id;
+    public Integer getRegisterId() {
+        return registerId;
     }
 
     /**
-     * @param register_id the register_id to set
+     * @param registerId the registerId to set
      */
-    public void setRegister_id( Integer register_id ) {
-        this.register_id = register_id;
+    public void setRegisterId( Integer registerId ) {
+        this.registerId = registerId;
     }
 
     /**
-     * @return the reg_dtm
+     * @return the regDtm
      */
-    public Date getReg_dtm() {
-        return reg_dtm;
+    public Date getRegDtm() {
+        return regDtm;
     }
 
     /**
-     * @param reg_dtm the reg_dtm to set
+     * @param regDtm the regDtm to set
      */
-    public void setReg_dtm( Date reg_dtm ) {
-        this.reg_dtm = reg_dtm;
+    public void setRegDtm( Date regDtm ) {
+        this.regDtm = regDtm;
     }
 
     /**
-     * @return the modifier_id
+     * @return the modifierId
      */
-    public Integer getModifier_id() {
-        return modifier_id;
+    public Integer getModifierId() {
+        return modifierId;
     }
 
     /**
-     * @param modifier_id the modifier_id to set
+     * @param modifierId the modifierId to set
      */
-    public void setModifier_id( Integer modifier_id ) {
-        this.modifier_id = modifier_id;
+    public void setModifierId( Integer modifierId ) {
+        this.modifierId = modifierId;
     }
 
     /**
-     * @return the upd_dtm
+     * @return the updDtm
      */
-    public Date getUpd_dtm() {
-        return upd_dtm;
+    public Date getUpdDtm() {
+        return updDtm;
     }
 
     /**
-     * @param upd_dtm the upd_dtm to set
+     * @param updDtm the updDtm to set
      */
-    public void setUpd_dtm( Date upd_dtm ) {
-        this.upd_dtm = upd_dtm;
+    public void setUpdDtm( Date updDtm ) {
+        this.updDtm = updDtm;
     }
 
     /**
-     * @return the open_yn
+     * @return the extVal
      */
-    public Boolean getOpen_yn() {
-        return open_yn;
+    public String getExtVal() {
+        return extVal;
     }
 
     /**
-     * @param open_yn the open_yn to set
+     * @param extVal the extVal to set
      */
-    public void setOpen_yn( Boolean open_yn ) {
-        this.open_yn = open_yn;
+    public void setExtVal( String extVal ) {
+        this.extVal = extVal;
     }
 
     /**
-     * @return the standard_spec
+     * @return the extVal2
      */
-    public String getStandard_spec() {
-        return standard_spec;
+    public String getExtVal2() {
+        return extVal2;
     }
 
     /**
-     * @param standard_spec the standard_spec to set
+     * @param extVal2 the extVal2 to set
      */
-    public void setStandard_spec( String standard_spec ) {
-        this.standard_spec = standard_spec;
+    public void setExtVal2( String extVal2 ) {
+        this.extVal2 = extVal2;
     }
 
     /**
-     * @return the ext_val
+     * @return the existsYn
      */
-    public String getExt_val() {
-        return ext_val;
+    public Boolean getExistsYn() {
+        return existsYn;
     }
 
     /**
-     * @param ext_val the ext_val to set
+     * @param existsYn the existsYn to set
      */
-    public void setExt_val( String ext_val ) {
-        this.ext_val = ext_val;
-    }
-
-    /**
-     * @return the ext_val2
-     */
-    public String getExt_val2() {
-        return ext_val2;
-    }
-
-    /**
-     * @param ext_val2 the ext_val2 to set
-     */
-    public void setExt_val2( String ext_val2 ) {
-        this.ext_val2 = ext_val2;
+    public void setExistsYn( Boolean existsYn ) {
+        this.existsYn = existsYn;
     }
 }

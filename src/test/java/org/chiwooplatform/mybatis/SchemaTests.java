@@ -1,13 +1,13 @@
-package org.chiwooplatform.sample;
+package org.chiwooplatform.mybatis;
 
 import javax.sql.DataSource;
 
-import org.chiwooplatform.mybatis.AbstractMybatisTests;
-import org.chiwooplatform.sample.model.Code;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
+
+import org.chiwooplatform.sample.model.Code;
+import org.junit.Test;
 
 public class SchemaTests
     extends AbstractMybatisTests<Code> {
@@ -24,7 +24,7 @@ public class SchemaTests
     private DataSource dataSource;
 
     @Test
-    @Sql(scripts = { "/schema.sql" })
+    @Sql(scripts = { "/schema.ddl" })
     public void testCreateSchema()
         throws Exception {
         logger.info( "dataSource: {}", dataSource );

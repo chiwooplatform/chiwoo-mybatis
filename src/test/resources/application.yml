@@ -15,21 +15,18 @@ spring:
 
 mybatis:
     type-aliases-package: org.chiwooplatform.mybatis.model,org.chiwooplatform.sample.model
-    type-handlers-package: org.chiwooplatform.module.mybatis.handler
+    type-handlers-package: org.chiwooplatform.mybatis.handler
     mapper-locations: classpath*:sql/mariadb/*.xml
 
     configuration:
-#        map-underscore-to-camel-case: true
+        map-underscore-to-camel-case: true
         default-fetch-size: 100
         default-statement-timeout: 30
         auto-mapping-behavior: partial
         auto-mapping-unknown-column-behavior: warning
-       
 
-   
 logging:
   config: classpath:logback.xml
-
 
 
 ---

@@ -3,11 +3,13 @@ package org.chiwooplatform.mybatis.handler;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+
 import org.apache.ibatis.type.DateTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -18,6 +20,7 @@ import org.apache.ibatis.type.MappedJdbcTypes;
 @MappedJdbcTypes(JdbcType.TIMESTAMP)
 public class UTCDateTypeHandler
     extends DateTypeHandler {
+
     private static final String TIME_ZONE = "UTC";
 
     @Override
