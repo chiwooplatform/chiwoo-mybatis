@@ -1,8 +1,3 @@
-/**
- * @author seonbo.shim
- * @version 1.0, 2017-04-21
- * @copyright BESPIN GLOBAL
- */
 package org.chiwooplatform.mybatis.supports;
 
 import org.junit.Test;
