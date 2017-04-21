@@ -109,4 +109,20 @@ public class CodeMapperTests
         logger.info( "BaseMapper.TOTAL_ROWCOUNT: {}", param.get( BaseMapper.TOTAL_ROWCOUNT ) );
         logger.info( "size: {}", list.size() );
     }
+
+    @Test
+    public void test_listOrderBy()
+        throws Exception {
+        Code model = model();
+        mapper.saveOrUpdate( model );
+        Map<String, Object> param = new HashMap<>();
+        param.put( "cd_id", this.cd_id );
+        param.put( BaseMapper.ROWBOUNDS_OFFSET, 1 );
+        param.put( BaseMapper.ROWBOUNDS_SCALE, 10 );
+        param.put( BaseMapper.ORDERBY, "cd_name,use_yn,reg_dtm:desc" );
+        RowBounds bounds = BaseMapper.rowBounds( param );
+        List<Code> list = mapper.query( param, bounds );
+        assertNotNull( list );
+        logger.info( "size: {}", list.size() );
+    }
 }

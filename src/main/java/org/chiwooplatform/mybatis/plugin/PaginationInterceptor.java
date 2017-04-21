@@ -24,6 +24,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import org.chiwooplatform.mybatis.dialect.Dialect;
 import org.chiwooplatform.mybatis.mapper.BaseMapper;
+import org.chiwooplatform.mybatis.supports.OrderByBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +40,7 @@ import org.slf4j.LoggerFactory;
 public class PaginationInterceptor
     implements Interceptor {
 
-    private final transient Logger log = LoggerFactory.getLogger( PaginationInterceptor.class );
+    private final transient Logger logger = LoggerFactory.getLogger( PaginationInterceptor.class );
 
     private final static int MAPPED_STATEMENT_INDEX = 0;
 
@@ -54,10 +55,17 @@ public class PaginationInterceptor
     public Object intercept( Invocation invocation )
         throws Throwable {
         final Object[] queryArgs = invocation.getArgs();
+        Object parameter = queryArgs[PARAMETER_INDEX];
+        Map<String, Object> param = null;
+        if ( parameter != null && ( parameter instanceof Map<?, ?> ) ) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> paramObj = (Map<String, Object>) parameter;
+            param = paramObj;
+        }
+        processTotalRowcount( invocation, param );
         if ( supportInterceptor( queryArgs ) ) {
-            processIntercept( invocation );
+            processIntercept( invocation, param );
         } else {
-            processTotalRowcount( invocation );
             queryArgs[ROWBOUNDS_INDEX] = org.apache.ibatis.session.RowBounds.DEFAULT;
         }
         return invocation.proceed();
@@ -101,68 +109,78 @@ public class PaginationInterceptor
         return pstmt;
     }
 
-    private void processTotalRowcount( Invocation invocation )
+    private static boolean containsKey( Map<String, Object> param, final String key ) {
+        if ( param == null ) {
+            return false;
+        }
+        if ( param.containsKey( key ) ) {
+            return true;
+        }
+        return false;
+    }
+
+    private void processTotalRowcount( Invocation invocation, Map<String, Object> param )
         throws SQLException {
-        if ( invocation.getTarget() instanceof Executor ) {
-            final Object[] queryArgs = invocation.getArgs();
-            MappedStatement ms = (MappedStatement) queryArgs[MAPPED_STATEMENT_INDEX];
-            Object parameter = queryArgs[PARAMETER_INDEX];
-            final RowBounds rowBounds = (RowBounds) queryArgs[ROWBOUNDS_INDEX];
-            Configuration config = ms.getConfiguration();
-            BoundSql boundSql = ms.getBoundSql( parameter );
-            if ( parameter instanceof Map<?, ?> ) {
-                @SuppressWarnings("unchecked")
-                Map<String, Object> param = (Map<String, Object>) parameter;
-                if ( param.containsKey( BaseMapper.TOTAL_ROWCOUNT ) ) {
-                    Executor executor = (Executor) invocation.getTarget();
-                    String countSql = "select count(1) as cnt from ( " + boundSql.getSql() + " ) TMP_TOTAL_COUNT";
-                    // log.trace( "countSql: {}", countSql );
-                    BoundSql countBoundSql = new BoundSql( config, countSql, boundSql.getParameterMappings(),
-                                                           boundSql.getParameterObject() );
-                    PreparedStatement pstmt = null;
-                    try {
-                        PreparedStatementHandler handler = new PreparedStatementHandler( executor, ms, parameter,
-                                                                                         rowBounds, null,
-                                                                                         countBoundSql );
-                        pstmt = prepareStatement( handler, executor, countSql );
-                        ResultSet rs = pstmt.executeQuery();
-                        if ( rs.next() ) {
-                            param.put( BaseMapper.TOTAL_ROWCOUNT, rs.getInt( 1 ) );
-                        }
-                    } finally {
-                        pstmt.close();
+        if ( containsKey( param, BaseMapper.TOTAL_ROWCOUNT ) ) {
+            if ( invocation.getTarget() instanceof Executor ) {
+                final Object[] queryArgs = invocation.getArgs();
+                MappedStatement ms = (MappedStatement) queryArgs[MAPPED_STATEMENT_INDEX];
+                Object parameter = queryArgs[PARAMETER_INDEX];
+                final RowBounds rowBounds = (RowBounds) queryArgs[ROWBOUNDS_INDEX];
+                Configuration config = ms.getConfiguration();
+                BoundSql boundSql = ms.getBoundSql( parameter );
+                Executor executor = (Executor) invocation.getTarget();
+                String countSql = "select count(1) as cnt from ( " + boundSql.getSql() + " ) TMP_TOTAL_COUNT";
+                // log.trace( "countSql: {}", countSql );
+                BoundSql countBoundSql = new BoundSql( config, countSql, boundSql.getParameterMappings(),
+                                                       boundSql.getParameterObject() );
+                PreparedStatement pstmt = null;
+                try {
+                    PreparedStatementHandler handler = new PreparedStatementHandler( executor, ms, parameter, rowBounds,
+                                                                                     null, countBoundSql );
+                    pstmt = prepareStatement( handler, executor, countSql );
+                    ResultSet rs = pstmt.executeQuery();
+                    if ( rs.next() ) {
+                        param.put( BaseMapper.TOTAL_ROWCOUNT, rs.getInt( 1 ) );
                     }
+                } finally {
+                    pstmt.close();
                 }
             }
         }
     }
 
-    private void processIntercept( Invocation invocation )
+    private void processIntercept( Invocation invocation, Map<String, Object> param )
         throws SQLException {
-        log.trace( "Pagination query prepare ..." );
+        logger.trace( "Pagination query prepare ..." );
         final Object[] queryArgs = invocation.getArgs();
         MappedStatement ms = (MappedStatement) queryArgs[MAPPED_STATEMENT_INDEX];
         Object parameter = queryArgs[PARAMETER_INDEX];
         final RowBounds rowBounds = (RowBounds) queryArgs[ROWBOUNDS_INDEX];
-        log.trace( "invocation.getTarget(): {}", invocation.getTarget().getClass().getName() );
-        log.trace( "invocation.getArgs(): {}", parameter );
-        log.trace( "rowBounds: {}", rowBounds );
+        logger.trace( "invocation.getTarget(): {}", invocation.getTarget().getClass().getName() );
+        logger.trace( "invocation.getArgs(): {}", parameter );
+        logger.trace( "rowBounds: {}", rowBounds );
         Configuration config = ms.getConfiguration();
         BoundSql boundSql = ms.getBoundSql( parameter );
-        processTotalRowcount( invocation );
+        Object parameterObject = boundSql.getParameterObject();
+        String sql = boundSql.getSql().trim();
+        if ( containsKey( param, BaseMapper.ORDERBY ) ) {
+            final String orderBy = OrderByBuilder.build( param );
+            if ( orderBy != null ) {
+                sql = sql + '\n' + orderBy;
+            }
+        }
         int offset = rowBounds.getOffset();
         int limit = rowBounds.getLimit();
         if ( dialect.supportsLimit() && ( offset != RowBounds.NO_ROW_OFFSET || limit != RowBounds.NO_ROW_LIMIT ) ) {
-            String sql = boundSql.getSql().trim();
             if ( dialect.supportsLimitOffset() ) {
                 sql = dialect.getLimitedSQL( sql, offset, limit );
                 offset = RowBounds.NO_ROW_OFFSET;
             } else {
                 sql = dialect.getLimitedSQL( sql, 0, limit );
             }
-            BoundSql newBoundSql = new BoundSql( config, sql, boundSql.getParameterMappings(),
-                                                 boundSql.getParameterObject() );
-            log.trace( "Mybatis Page Search：" + sql.replaceAll( "\n", "" ) );
+            BoundSql newBoundSql = new BoundSql( config, sql, boundSql.getParameterMappings(), parameterObject );
+            logger.trace( "Mybatis Page Search：" + sql.replaceAll( "\n", "" ) );
             MappedStatement newMs = copyFromMappedStatement( ms, new BoundSqlSqlSource( newBoundSql ) );
             queryArgs[MAPPED_STATEMENT_INDEX] = newMs;
         }

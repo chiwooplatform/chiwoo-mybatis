@@ -26,6 +26,8 @@ public interface BaseMapper<T> {
 
     String TOTAL_ROWCOUNT = "TOTAL_CNT";
 
+    String ORDERBY = "orderBy";
+
     /**
      * 신규 데이타 생성 처리
      * 
