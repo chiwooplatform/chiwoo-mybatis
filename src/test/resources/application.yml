@@ -1,9 +1,9 @@
 
 spring:
   application:
-    name: mybatis-plugin
+    name: chiwoo-mybatis
   datasource:
-    url: jdbc:mariadb://192.168.56.11:3306/SAMPLES
+    url: jdbc:mariadb://192.168.56.11:3306/CHIWOOSAMPLES
     username: aider
     password: aider1234
     driver-class-name: org.mariadb.jdbc.Driver
