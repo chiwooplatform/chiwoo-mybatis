@@ -1,13 +1,14 @@
-chiwoo-mybatis 모듈은 다음과 같은 기능적 Feature 를 지원 합니다.
+# The chiwoo-mybatis module supports the following functional features.
+  - It has supported PRS(Partial Range Scan) query.
+  - It has supported DBMS vendor specific feature through dialect.
+  - It has supported JDBC DataTypeHandler.  
+  - It has supported GenericDao through BaseMapper and ExtMapper.
+  - It has supported common collection map through ResultMap.
+  - It has handled Query Logger with binded parameters.
+  - Automatically fetches the total record count based on the condition.
+  - Automatically handles column sort criteria based on conditions.
 
-- PRS(Partial Range Scan) 쿼리 지원
-  - Dialect 를 통한 DBMS vendor specific feature 지원
-  - JDBC DataTypeHandler 지원 
-- GenericDao 지원 
-  BaseMapper : 
-  ExtMapper  :    
-- ResultMap 공통 컬렉션 맵 지원
-- Binding parameters Query Logger
- 
-* Next 버전에 추가될 Feature
-  
+Note that, To install into the local maven repository, run the following command:
+~~~
+mvn clean source:jar javadoc:jar install
+~~~
